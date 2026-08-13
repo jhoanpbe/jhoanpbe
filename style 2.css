@@ -1,0 +1,134 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+#container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: #000;
+    overflow: hidden;
+}
+
+video, canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+video {
+    /* El brillo/contraste ahora se calcula y aplica
+       automáticamente desde app.js según el ambiente */
+    transition: filter 0.3s ease-out;
+}
+
+video.mirror,
+canvas.mirror {
+    transform: scaleX(-1);
+}
+
+canvas {
+    pointer-events: none;
+}
+
+#flash {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+    transition: opacity 0.15s ease-out;
+}
+
+#flash.activo {
+    opacity: 0.85;
+    transition: opacity 0.05s ease-in;
+}
+
+#miniaturaCaptura {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    z-index: 15;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+    pointer-events: none;
+}
+
+#miniaturaCaptura.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#topBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 16px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+}
+
+#topBar h1 {
+    margin: 0 0 4px 0;
+    font-size: 1.4rem;
+}
+
+#topBar p {
+    margin: 0;
+    font-size: 0.95rem;
+    opacity: 0.85;
+}
+
+.buttons {
+    position: absolute;
+    bottom: 24px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    z-index: 10;
+}
+
+.buttons button {
+    pointer-events: auto;
+    flex: 1;
+    max-width: 220px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #000;
+    font-weight: 600;
+}
+
+.buttons button:active {
+    background: rgba(255, 255, 255, 0.7);
+}
