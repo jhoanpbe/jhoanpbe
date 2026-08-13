@@ -1,0 +1,419 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --neon: #00ffc8;
+    --neon-dim: rgba(0, 255, 200, 0.35);
+    --magenta: #ff2ee0;
+    --bg-hondo: #05070a;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-hondo);
+    color: white;
+    font-family: 'Rajdhani', Arial, sans-serif;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+#container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: #000;
+    overflow: hidden;
+}
+
+video, canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+video {
+    transition: filter 0.3s ease-out;
+}
+
+video.mirror,
+canvas.mirror {
+    transform: scaleX(-1);
+}
+
+canvas {
+    pointer-events: none;
+}
+
+#flash {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+    transition: opacity 0.15s ease-out;
+}
+
+#flash.activo {
+    opacity: 0.85;
+    transition: opacity 0.05s ease-in;
+}
+
+#miniaturaCaptura {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid var(--neon);
+    box-shadow: 0 0 16px var(--neon-dim), 0 4px 14px rgba(0, 0, 0, 0.4);
+    z-index: 15;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+    pointer-events: none;
+}
+
+#miniaturaCaptura.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* =====================================================
+   PORTADA FUTURISTA
+   ===================================================== */
+
+#portada {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle at 50% 20%, rgba(0, 255, 200, 0.10), transparent 55%),
+        radial-gradient(circle at 85% 85%, rgba(255, 46, 224, 0.10), transparent 50%),
+        var(--bg-hondo);
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#portada.oculta {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.portadaGrid {
+    position: absolute;
+    inset: -2px;
+    background-image:
+        linear-gradient(rgba(0, 255, 200, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 200, 0.09) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at 50% 40%, black 10%, transparent 75%);
+    animation: derivaGrid 16s linear infinite;
+}
+
+@keyframes derivaGrid {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 84px 84px, 84px 84px; }
+}
+
+.portadaEscaner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    box-shadow: 0 0 18px 3px var(--neon-dim);
+    animation: escanearVertical 4.5s ease-in-out infinite;
+    opacity: 0.75;
+}
+
+@keyframes escanearVertical {
+    0%   { top: 6%; opacity: 0; }
+    10%  { opacity: 0.75; }
+    50%  { top: 92%; opacity: 0.75; }
+    60%  { opacity: 0; }
+    100% { top: 92%; opacity: 0; }
+}
+
+.portadaContenido {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 460px;
+    padding: 0 28px;
+    text-align: center;
+}
+
+.portadaEtiqueta {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
+    color: var(--neon);
+    opacity: 0.85;
+    margin-bottom: 14px;
+}
+
+.portadaTitulo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 2.6rem;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 18px var(--neon-dim);
+}
+
+.portadaTitulo span {
+    color: var(--neon);
+    text-shadow: 0 0 22px var(--neon), 0 0 40px var(--neon-dim);
+}
+
+.portadaSubtitulo {
+    margin: 10px 0 0 0;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.portadaLinea {
+    width: 64px;
+    height: 2px;
+    margin: 22px auto;
+    background: linear-gradient(90deg, transparent, var(--neon), transparent);
+}
+
+.portadaLista {
+    list-style: none;
+    margin: 0 0 30px 0;
+    padding: 0;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-weight: 500;
+}
+
+.portadaLista .punto {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--neon);
+    box-shadow: 0 0 8px var(--neon);
+    margin-right: 10px;
+}
+
+.botonIniciar {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    padding: 16px 24px;
+    border: 1px solid var(--neon);
+    border-radius: 10px;
+    background: rgba(0, 255, 200, 0.08);
+    color: var(--neon);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    box-shadow: 0 0 24px var(--neon-dim), inset 0 0 14px rgba(0, 255, 200, 0.08);
+    animation: pulsoBoton 2.2s ease-in-out infinite;
+}
+
+.botonIniciar:active {
+    transform: scale(0.97);
+    background: rgba(0, 255, 200, 0.18);
+}
+
+@keyframes pulsoBoton {
+    0%, 100% { box-shadow: 0 0 18px var(--neon-dim), inset 0 0 14px rgba(0, 255, 200, 0.08); }
+    50%      { box-shadow: 0 0 34px var(--neon-dim), inset 0 0 20px rgba(0, 255, 200, 0.16); }
+}
+
+.botonIniciarBrillo {
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+    animation: brilloBarrido 3s ease-in-out infinite;
+}
+
+@keyframes brilloBarrido {
+    0%   { left: -60%; }
+    100% { left: 120%; }
+}
+
+.portadaAviso {
+    margin: 16px 0 0 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.02em;
+}
+
+.esquinaHud {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--neon);
+    opacity: 0.8;
+}
+
+.esquinaHud--tl { top: 18px; left: 18px; border-right: none; border-bottom: none; }
+.esquinaHud--tr { top: 18px; right: 18px; border-left: none; border-bottom: none; }
+.esquinaHud--bl { bottom: 18px; left: 18px; border-right: none; border-top: none; }
+.esquinaHud--br { bottom: 18px; right: 18px; border-left: none; border-top: none; }
+
+
+/* =====================================================
+   MARCO HUD SOBRE LA CÁMARA ACTIVA
+   ===================================================== */
+
+#marcoHud {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    pointer-events: none;
+}
+
+#marcoHud .esquinaHud {
+    width: 34px;
+    height: 34px;
+    opacity: 0.55;
+}
+
+.lineaEscaneoActiva {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-dim), transparent);
+    top: 50%;
+    animation: escanearVertical 5s ease-in-out infinite;
+    opacity: 0.35;
+}
+
+
+/* =====================================================
+   TOP BAR (HUD superior durante el rastreo)
+   ===================================================== */
+
+#topBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 16px 18px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.65), transparent);
+}
+
+.topBarFila {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#topBar h1 {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: var(--neon);
+    text-shadow: 0 0 12px var(--neon-dim);
+}
+
+.indicadorEnVivo {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--magenta);
+    border: 1px solid var(--magenta);
+    border-radius: 999px;
+    padding: 3px 9px 3px 7px;
+}
+
+.indicadorEnVivo .punto {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--magenta);
+    margin-right: 5px;
+    box-shadow: 0 0 8px var(--magenta);
+    animation: parpadeoVivo 1.3s ease-in-out infinite;
+}
+
+@keyframes parpadeoVivo {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.25; }
+}
+
+#topBar p {
+    margin: 6px 0 0 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0.9;
+    letter-spacing: 0.01em;
+}
+
+
+/* =====================================================
+   BOTONES INFERIORES
+   ===================================================== */
+
+.buttons {
+    position: absolute;
+    bottom: 24px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    z-index: 10;
+}
+
+.buttons button {
+    pointer-events: auto;
+    flex: 1;
+    max-width: 220px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    font-family: 'Rajdhani', Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    border: 1px solid var(--neon);
+    border-radius: 999px;
+    background: rgba(5, 7, 10, 0.55);
+    color: var(--neon);
+    box-shadow: 0 0 14px var(--neon-dim);
+    backdrop-filter: blur(4px);
+}
+
+.buttons button:active {
+    background: rgba(0, 255, 200, 0.18);
+}
